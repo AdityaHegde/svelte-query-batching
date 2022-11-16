@@ -1,0 +1,100 @@
+syntax = "proto3";
+
+package rill.batching.v1;
+
+import "google/api/annotations.proto";
+
+option go_package = "github.com/rilldata/rill/batching/api;api";
+
+service BatchingService {
+  rpc QueryZero(QueryZeroRequest) returns (QueryZeroResponse) {
+    option (google.api.http) = {
+      get: "/v1/query/zero/{name}"
+    };
+  }
+
+  rpc QueryOne(QueryOneRequest) returns (QueryOneResponse) {
+    option (google.api.http) = {
+      get: "/v1/query/one/{name}"
+    };
+  }
+
+  rpc QueryTwo(QueryTwoRequest) returns (QueryTwoResponse) {
+    option (google.api.http) = {
+      get: "/v1/query/two/{name}"
+    };
+  }
+
+  rpc QueryBatch(QueryBatchRequest) returns (stream QueryBatchResponse) {
+    option (google.api.http) = {
+      post: "/v1/query/batch",
+      body: "*"
+    };
+  }
+}
+
+enum QueryType {
+  Zero = 0;
+  One = 1;
+  Two = 2;
+}
+
+message QueryZeroRequest {
+  string name = 1;
+  string argZeroZero = 2;
+  int32 argZeroOne = 3;
+}
+
+message QueryZeroResponse {
+  string respZeroZero = 2;
+}
+
+message QueryOneRequest {
+  string name = 1;
+  string argOneZero = 2;
+}
+
+message QueryOneResponse {
+  string respOneZero = 2;
+  int32 respOneOne = 3;
+}
+
+message QueryTwoRequest {
+  string name = 1;
+  int32 argTwoZero = 2;
+  string argTwoOne = 3;
+  bool argTwoTwo = 4;
+}
+
+message QueryTwoResponse {
+  string respTwoZero = 2;
+}
+
+message QueryRequest {
+  int32 id = 1;
+  QueryType type = 2;
+  oneof query {
+    QueryZeroRequest zeroRequest = 3;
+    QueryOneRequest oneRequest = 4;
+    QueryTwoRequest twoRequest = 5;
+  }
+}
+
+message QueryResponse {
+  int32 id = 1;
+  QueryType type = 2;
+  oneof query {
+    QueryZeroResponse zeroResponse = 3;
+    QueryOneResponse oneResponse = 4;
+    QueryTwoResponse twoResponse = 5;
+  }
+  string error = 6;
+}
+
+message QueryBatchRequest {
+  repeated QueryRequest queries = 1;
+}
+
+message QueryBatchResponse {
+  QueryResponse result = 1;
+}
