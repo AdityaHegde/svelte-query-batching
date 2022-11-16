@@ -18,11 +18,11 @@ import type {
 	RpcStatus,
 	V1QueryBatchRequest,
 	V1QueryOneResponse,
-	BatchingServiceQueryOneParams,
+	BatchingServiceQueryOneBody,
 	V1QueryTwoResponse,
-	BatchingServiceQueryTwoParams,
+	BatchingServiceQueryTwoBody,
 	V1QueryZeroResponse,
-	BatchingServiceQueryZeroParams
+	BatchingServiceQueryZeroBody
 } from '../index.schemas';
 import { httpClient } from '.././http-client';
 
@@ -69,21 +69,20 @@ export const useBatchingServiceQueryBatch = <TError = RpcStatus, TContext = unkn
 };
 export const batchingServiceQueryOne = (
 	name: string,
-	params?: BatchingServiceQueryOneParams,
-	signal?: AbortSignal
+	batchingServiceQueryOneBody: BatchingServiceQueryOneBody
 ) => {
 	return httpClient<V1QueryOneResponse>({
 		url: `/v1/query/one/${name}`,
-		method: 'get',
-		params,
-		signal
+		method: 'post',
+		headers: { 'Content-Type': 'application/json' },
+		data: batchingServiceQueryOneBody
 	});
 };
 
 export const getBatchingServiceQueryOneQueryKey = (
 	name: string,
-	params?: BatchingServiceQueryOneParams
-) => [`/v1/query/one/${name}`, ...(params ? [params] : [])];
+	batchingServiceQueryOneBody: BatchingServiceQueryOneBody
+) => [`/v1/query/one/${name}`, batchingServiceQueryOneBody];
 
 export type BatchingServiceQueryOneQueryResult = NonNullable<
 	Awaited<ReturnType<typeof batchingServiceQueryOne>>
@@ -95,7 +94,7 @@ export const useBatchingServiceQueryOne = <
 	TError = RpcStatus
 >(
 	name: string,
-	params?: BatchingServiceQueryOneParams,
+	batchingServiceQueryOneBody: BatchingServiceQueryOneBody,
 	options?: {
 		query?: UseQueryOptions<Awaited<ReturnType<typeof batchingServiceQueryOne>>, TError, TData>;
 	}
@@ -107,11 +106,11 @@ export const useBatchingServiceQueryOne = <
 > & { queryKey: QueryKey } => {
 	const { query: queryOptions } = options ?? {};
 
-	const queryKey = queryOptions?.queryKey ?? getBatchingServiceQueryOneQueryKey(name, params);
+	const queryKey =
+		queryOptions?.queryKey ?? getBatchingServiceQueryOneQueryKey(name, batchingServiceQueryOneBody);
 
-	const queryFn: QueryFunction<Awaited<ReturnType<typeof batchingServiceQueryOne>>> = ({
-		signal
-	}) => batchingServiceQueryOne(name, params, signal);
+	const queryFn: QueryFunction<Awaited<ReturnType<typeof batchingServiceQueryOne>>> = () =>
+		batchingServiceQueryOne(name, batchingServiceQueryOneBody);
 
 	const query = useQuery<Awaited<ReturnType<typeof batchingServiceQueryOne>>, TError, TData>(
 		queryKey,
@@ -131,21 +130,20 @@ export const useBatchingServiceQueryOne = <
 
 export const batchingServiceQueryTwo = (
 	name: string,
-	params?: BatchingServiceQueryTwoParams,
-	signal?: AbortSignal
+	batchingServiceQueryTwoBody: BatchingServiceQueryTwoBody
 ) => {
 	return httpClient<V1QueryTwoResponse>({
 		url: `/v1/query/two/${name}`,
-		method: 'get',
-		params,
-		signal
+		method: 'post',
+		headers: { 'Content-Type': 'application/json' },
+		data: batchingServiceQueryTwoBody
 	});
 };
 
 export const getBatchingServiceQueryTwoQueryKey = (
 	name: string,
-	params?: BatchingServiceQueryTwoParams
-) => [`/v1/query/two/${name}`, ...(params ? [params] : [])];
+	batchingServiceQueryTwoBody: BatchingServiceQueryTwoBody
+) => [`/v1/query/two/${name}`, batchingServiceQueryTwoBody];
 
 export type BatchingServiceQueryTwoQueryResult = NonNullable<
 	Awaited<ReturnType<typeof batchingServiceQueryTwo>>
@@ -157,7 +155,7 @@ export const useBatchingServiceQueryTwo = <
 	TError = RpcStatus
 >(
 	name: string,
-	params?: BatchingServiceQueryTwoParams,
+	batchingServiceQueryTwoBody: BatchingServiceQueryTwoBody,
 	options?: {
 		query?: UseQueryOptions<Awaited<ReturnType<typeof batchingServiceQueryTwo>>, TError, TData>;
 	}
@@ -169,11 +167,11 @@ export const useBatchingServiceQueryTwo = <
 > & { queryKey: QueryKey } => {
 	const { query: queryOptions } = options ?? {};
 
-	const queryKey = queryOptions?.queryKey ?? getBatchingServiceQueryTwoQueryKey(name, params);
+	const queryKey =
+		queryOptions?.queryKey ?? getBatchingServiceQueryTwoQueryKey(name, batchingServiceQueryTwoBody);
 
-	const queryFn: QueryFunction<Awaited<ReturnType<typeof batchingServiceQueryTwo>>> = ({
-		signal
-	}) => batchingServiceQueryTwo(name, params, signal);
+	const queryFn: QueryFunction<Awaited<ReturnType<typeof batchingServiceQueryTwo>>> = () =>
+		batchingServiceQueryTwo(name, batchingServiceQueryTwoBody);
 
 	const query = useQuery<Awaited<ReturnType<typeof batchingServiceQueryTwo>>, TError, TData>(
 		queryKey,
@@ -193,21 +191,20 @@ export const useBatchingServiceQueryTwo = <
 
 export const batchingServiceQueryZero = (
 	name: string,
-	params?: BatchingServiceQueryZeroParams,
-	signal?: AbortSignal
+	batchingServiceQueryZeroBody: BatchingServiceQueryZeroBody
 ) => {
 	return httpClient<V1QueryZeroResponse>({
 		url: `/v1/query/zero/${name}`,
-		method: 'get',
-		params,
-		signal
+		method: 'post',
+		headers: { 'Content-Type': 'application/json' },
+		data: batchingServiceQueryZeroBody
 	});
 };
 
 export const getBatchingServiceQueryZeroQueryKey = (
 	name: string,
-	params?: BatchingServiceQueryZeroParams
-) => [`/v1/query/zero/${name}`, ...(params ? [params] : [])];
+	batchingServiceQueryZeroBody: BatchingServiceQueryZeroBody
+) => [`/v1/query/zero/${name}`, batchingServiceQueryZeroBody];
 
 export type BatchingServiceQueryZeroQueryResult = NonNullable<
 	Awaited<ReturnType<typeof batchingServiceQueryZero>>
@@ -219,7 +216,7 @@ export const useBatchingServiceQueryZero = <
 	TError = RpcStatus
 >(
 	name: string,
-	params?: BatchingServiceQueryZeroParams,
+	batchingServiceQueryZeroBody: BatchingServiceQueryZeroBody,
 	options?: {
 		query?: UseQueryOptions<Awaited<ReturnType<typeof batchingServiceQueryZero>>, TError, TData>;
 	}
@@ -231,11 +228,12 @@ export const useBatchingServiceQueryZero = <
 > & { queryKey: QueryKey } => {
 	const { query: queryOptions } = options ?? {};
 
-	const queryKey = queryOptions?.queryKey ?? getBatchingServiceQueryZeroQueryKey(name, params);
+	const queryKey =
+		queryOptions?.queryKey ??
+		getBatchingServiceQueryZeroQueryKey(name, batchingServiceQueryZeroBody);
 
-	const queryFn: QueryFunction<Awaited<ReturnType<typeof batchingServiceQueryZero>>> = ({
-		signal
-	}) => batchingServiceQueryZero(name, params, signal);
+	const queryFn: QueryFunction<Awaited<ReturnType<typeof batchingServiceQueryZero>>> = () =>
+		batchingServiceQueryZero(name, batchingServiceQueryZeroBody);
 
 	const query = useQuery<Awaited<ReturnType<typeof batchingServiceQueryZero>>, TError, TData>(
 		queryKey,

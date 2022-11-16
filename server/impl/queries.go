@@ -5,7 +5,7 @@ import (
 	"errors"
 	"fmt"
 
-	"github.com/rilldata/svelte-query-batching/server/api"
+	"github.com/AdityaHegde/svelte-query-batching/server/api"
 )
 
 func (s *Server) QueryZero(ctx context.Context, req *api.QueryZeroRequest) (*api.QueryZeroResponse, error) {
@@ -22,7 +22,7 @@ func (s *Server) QueryOne(ctx context.Context, req *api.QueryOneRequest) (*api.Q
 }
 
 func (s *Server) QueryTwo(ctx context.Context, req *api.QueryTwoRequest) (*api.QueryTwoResponse, error) {
-	if req.ArgTwoTwo {
+	if !req.ArgTwoTwo {
 		return nil, errors.New("query two errored out")
 	}
 	return &api.QueryTwoResponse{

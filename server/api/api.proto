@@ -9,19 +9,22 @@ option go_package = "github.com/rilldata/rill/batching/api;api";
 service BatchingService {
   rpc QueryZero(QueryZeroRequest) returns (QueryZeroResponse) {
     option (google.api.http) = {
-      get: "/v1/query/zero/{name}"
+      post: "/v1/query/zero/{name}"
+      body: "*"
     };
   }
 
   rpc QueryOne(QueryOneRequest) returns (QueryOneResponse) {
     option (google.api.http) = {
-      get: "/v1/query/one/{name}"
+      post: "/v1/query/one/{name}"
+      body: "*"
     };
   }
 
   rpc QueryTwo(QueryTwoRequest) returns (QueryTwoResponse) {
     option (google.api.http) = {
-      get: "/v1/query/two/{name}"
+      post: "/v1/query/two/{name}"
+      body: "*"
     };
   }
 

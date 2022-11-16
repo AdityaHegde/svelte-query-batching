@@ -58,7 +58,7 @@
       }
     },
     "/v1/query/one/{name}": {
-      "get": {
+      "post": {
         "operationId": "BatchingService_QueryOne",
         "responses": {
           "200": {
@@ -82,10 +82,17 @@
             "type": "string"
           },
           {
-            "name": "argOneZero",
-            "in": "query",
-            "required": false,
-            "type": "string"
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "argOneZero": {
+                  "type": "string"
+                }
+              }
+            }
           }
         ],
         "tags": [
@@ -94,7 +101,7 @@
       }
     },
     "/v1/query/two/{name}": {
-      "get": {
+      "post": {
         "operationId": "BatchingService_QueryTwo",
         "responses": {
           "200": {
@@ -118,23 +125,24 @@
             "type": "string"
           },
           {
-            "name": "argTwoZero",
-            "in": "query",
-            "required": false,
-            "type": "integer",
-            "format": "int32"
-          },
-          {
-            "name": "argTwoOne",
-            "in": "query",
-            "required": false,
-            "type": "string"
-          },
-          {
-            "name": "argTwoTwo",
-            "in": "query",
-            "required": false,
-            "type": "boolean"
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "argTwoZero": {
+                  "type": "integer",
+                  "format": "int32"
+                },
+                "argTwoOne": {
+                  "type": "string"
+                },
+                "argTwoTwo": {
+                  "type": "boolean"
+                }
+              }
+            }
           }
         ],
         "tags": [
@@ -143,7 +151,7 @@
       }
     },
     "/v1/query/zero/{name}": {
-      "get": {
+      "post": {
         "operationId": "BatchingService_QueryZero",
         "responses": {
           "200": {
@@ -167,17 +175,21 @@
             "type": "string"
           },
           {
-            "name": "argZeroZero",
-            "in": "query",
-            "required": false,
-            "type": "string"
-          },
-          {
-            "name": "argZeroOne",
-            "in": "query",
-            "required": false,
-            "type": "integer",
-            "format": "int32"
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "argZeroZero": {
+                  "type": "string"
+                },
+                "argZeroOne": {
+                  "type": "integer",
+                  "format": "int32"
+                }
+              }
+            }
           }
         ],
         "tags": [

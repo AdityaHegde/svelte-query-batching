@@ -13,7 +13,7 @@ export const httpClient = async <T>({
 	params?: any;
 	data?: any;
 	headers?: any;
-	signal?: any;
+	signal?: AbortSignal;
 }): Promise<T> => {
 	if (url.startsWith('/v1/query/')) {
 		const type = url.split('/')[3].replace(/^\w/, (substring) => substring.toUpperCase());

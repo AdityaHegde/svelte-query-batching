@@ -4,15 +4,20 @@
  * api.proto
  * OpenAPI spec version: version not set
  */
-export type BatchingServiceQueryZeroParams = { argZeroZero?: string; argZeroOne?: number };
+export type BatchingServiceQueryZeroBody = {
+	argZeroZero?: string;
+	argZeroOne?: number;
+};
 
-export type BatchingServiceQueryTwoParams = {
+export type BatchingServiceQueryTwoBody = {
 	argTwoZero?: number;
 	argTwoOne?: string;
 	argTwoTwo?: boolean;
 };
 
-export type BatchingServiceQueryOneParams = { argOneZero?: string };
+export type BatchingServiceQueryOneBody = {
+	argOneZero?: string;
+};
 
 export type BatchingServiceQueryBatch200 = {
 	result?: V1QueryBatchResponse;

@@ -2,8 +2,7 @@ package main
 
 import (
 	"context"
-
-	"github.com/rilldata/svelte-query-batching/server/impl"
+	"github.com/AdityaHegde/svelte-query-batching/server/impl"
 )
 
 func main() {

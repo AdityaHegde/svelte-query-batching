@@ -71,7 +71,7 @@ export async function sendBatch(request: V1QueryBatchRequest, resp: RespType) {
 		const idx = s.result.id ?? 0;
 		hit.add(idx);
 		if (s.result.error) {
-			resp[idx][1](s.result.error);
+			resp[idx][1](new Error(s.result.error));
 			continue;
 		}
 		resp[idx][0](s.result.zeroResponse ?? s.result.oneResponse ?? s.result.twoResponse);
@@ -79,6 +79,6 @@ export async function sendBatch(request: V1QueryBatchRequest, resp: RespType) {
 
 	for (let i = 0; i < resp.length; i++) {
 		if (hit.has(i)) continue;
-		resp[i][1]('No response');
+		resp[i][1](new Error('No response'));
 	}
 }

@@ -9,8 +9,8 @@ import (
 	"sync"
 	"time"
 
+	"github.com/AdityaHegde/svelte-query-batching/server/api"
 	gateway "github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
-	"github.com/rilldata/svelte-query-batching/server/api"
 	"golang.org/x/sync/errgroup"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
