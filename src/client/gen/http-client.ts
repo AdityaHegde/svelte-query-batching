@@ -6,7 +6,8 @@ export const httpClient = async <T>({
 	method,
 	params,
 	data,
-	headers
+	headers,
+	signal
 }: {
 	url: string;
 	method: 'get' | 'post' | 'put' | 'delete' | 'patch';
@@ -17,9 +18,9 @@ export const httpClient = async <T>({
 }): Promise<T> => {
 	if (url.startsWith('/v1/query/')) {
 		const type = url.split('/')[3].replace(/^\w/, (substring) => substring.toUpperCase());
-		return batchRequests(type as any, params ?? data);
+		return batchRequests(type as any, params ?? data, signal);
 	}
-	return fetchWrapper(url, method, data, headers);
+	return fetchWrapper(url, method, data, headers, signal);
 };
 
 export default httpClient;

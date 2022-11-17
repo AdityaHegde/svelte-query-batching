@@ -15,18 +15,21 @@ let responses: RespType = [];
 let batchedRequest: V1QueryBatchRequest = {
 	queries: []
 };
+let batchedSignals = new Array<AbortSignal | undefined>();
 
 const throttleCallback = () => {
-	sendBatch(batchedRequest, responses);
+	sendBatch(batchedRequest, responses, batchedSignals);
 	batchedRequest = {
 		queries: []
 	};
 	responses = [];
+	batchedSignals = [];
 };
 
 export function batchRequests(
 	type: V1QueryType,
-	request: V1QueryZeroRequest | V1QueryOneRequest | V1QueryTwoRequest
+	request: V1QueryZeroRequest | V1QueryOneRequest | V1QueryTwoRequest,
+	signal: AbortSignal | undefined
 ): Promise<any> {
 	return new Promise((resolve, reject) => {
 		if (!batchedRequest.queries) {
@@ -50,17 +53,38 @@ export function batchRequests(
 		}
 		batchedRequest.queries.push(req);
 		responses.push([resolve, reject]);
+		batchedSignals.push(signal);
 
 		throttle(throttleCallback);
 	});
 }
 
-export async function sendBatch(request: V1QueryBatchRequest, resp: RespType) {
+export async function sendBatch(
+	request: V1QueryBatchRequest,
+	resp: RespType,
+	signals: Array<AbortSignal | undefined>
+) {
+	const controller = new AbortController();
 	const stream = streamingFetchWrapper<V1QueryBatchResponse>(
 		'/v1/query/batch',
 		'post',
-		request as any
+		request as any,
+		controller.signal
 	);
+
+	signals.forEach((signal) => {
+		signal?.addEventListener(
+			'abort',
+			() => {
+				if (controller.signal.aborted) return;
+				controller.abort();
+				stream.throw(new Error('cancelled'));
+			},
+			{
+				once: true
+			}
+		);
+	});
 
 	const hit = new Set<number>();
 

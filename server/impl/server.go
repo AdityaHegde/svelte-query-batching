@@ -25,14 +25,12 @@ var _ api.BatchingServiceServer = (*Server)(nil)
 func (s *Server) QueryBatch(req *api.QueryBatchRequest, srv api.BatchingService_QueryBatchServer) error {
 	var wg sync.WaitGroup
 
-	ctx := context.Background()
-
 	for _, query := range req.Queries {
 		wg.Add(1)
 		go func(query *api.QueryRequest) {
 			defer wg.Done()
 			// time sleep to simulate server process time
-			time.Sleep(time.Duration(rand.Int31n(3)) * time.Second)
+			time.Sleep(time.Duration(rand.Int31n(5)) * time.Second)
 
 			resp := api.QueryBatchResponse{
 				Result: &api.QueryResponse{
@@ -45,21 +43,21 @@ func (s *Server) QueryBatch(req *api.QueryBatchRequest, srv api.BatchingService_
 			switch query.Type {
 			case api.QueryType_Zero:
 				var r *api.QueryZeroResponse
-				r, err = s.QueryZero(ctx, query.GetZeroRequest())
+				r, err = s.QueryZero(srv.Context(), query.GetZeroRequest())
 				if err == nil {
 					resp.Result.Query = &api.QueryResponse_ZeroResponse{ZeroResponse: r}
 				}
 
 			case api.QueryType_One:
 				var r *api.QueryOneResponse
-				r, err = s.QueryOne(ctx, query.GetOneRequest())
+				r, err = s.QueryOne(srv.Context(), query.GetOneRequest())
 				if err == nil {
 					resp.Result.Query = &api.QueryResponse_OneResponse{OneResponse: r}
 				}
 
 			case api.QueryType_Two:
 				var r *api.QueryTwoResponse
-				r, err = s.QueryTwo(ctx, query.GetTwoRequest())
+				r, err = s.QueryTwo(srv.Context(), query.GetTwoRequest())
 				if err == nil {
 					resp.Result.Query = &api.QueryResponse_TwoResponse{TwoResponse: r}
 				}

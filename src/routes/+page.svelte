@@ -9,6 +9,7 @@
 				refetchOnMount: false,
 				refetchOnReconnect: false,
 				refetchOnWindowFocus: false,
+				retry: false,
 			}
 		}
 	});
